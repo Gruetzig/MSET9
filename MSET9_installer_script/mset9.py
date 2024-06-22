@@ -742,7 +742,17 @@ def injection():
 	if not fs.exists(id0 + "/" + hackedId1):
 		prinfo("Creating hacked ID1...")
 		hackedId1Path = id0 + "/" + hackedId1
-		fs.mkdir(hackedId1Path)
+		try:
+			fs.mkdir(hackedId1Path)
+		except OSError as err:
+			if str(err).startswith("[WinError 234]"):
+				prbad("Error 13: WinError 234!")
+				prinfo("Please go to https://3ds.hacks.guide/troubleshooting#installing-boot9strap-mset9 for instructions.")
+				prinfo("If you need help, join Nintendo Homebrew on Discord: https://discord.gg/nintendohomebrew")
+			else:
+				prbad(f"Unknown Error: {str(err)}")
+				prinfo("Join Nintendo Homebrew on Discord for help: https://discord.gg/nintendohomebrew")
+			exitOnEnter()
 		fs.mkdir(hackedId1Path + "/extdata")
 		fs.mkdir(hackedId1Path + "/extdata/00000000")
 	else:
